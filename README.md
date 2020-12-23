@@ -1,4 +1,13 @@
 # deviceid
+Before we start, add the following line into /etc/sysctl.conf
+```
+vm.max_map_count=262144
+```
+Then
+```
+sudo sysctl -p
+```
+
 Clone this repo and build the image
 ```
 docker build -t biennt/deviceidelk .
