@@ -1,5 +1,5 @@
 # deviceid
-Build the image
+Clone this repo and build the image
 ```
 docker build -t biennt/deviceidelk .
 ```
@@ -11,5 +11,6 @@ docker run -d -p 5601:5601 -p 9200:9200 -p 5044:5044 -p 5140:5140 -p 5140:5140/u
 Accessing Kibana interface
 - Create Index patterns (find the one start with logstash-devid*)
 - Go to discover to see the raw/parsed log
-- Import the dashboard
+- Import the dashboard under Stack Management --> Saved Objects --> Import (use deviceid_dashboard.ndjson file)
+
 Have fun!
