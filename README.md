@@ -1,4 +1,5 @@
 # deviceid
+## build and run the elk as container
 Before we start, add the following line into /etc/sysctl.conf
 ```
 vm.max_map_count=262144
@@ -12,6 +13,8 @@ If using Docker for Mac, then you will need to start the container with the MAX_
 docker run... -e MAX_MAP_COUNT=262144..
 ```
 Clone this repo and build the image
+
+(information about the base image is here https://elk-docker.readthedocs.io/)
 ```
 docker build -t biennt/deviceidelk .
 ```
