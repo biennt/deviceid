@@ -28,6 +28,11 @@ Accessing Kibana interface
 Sample nginx configurations, bigip irules are located in nginx/bigip directory
 
 ## putting nginx in front of elk, so you can accessing as https://your-elk.com 
+Basic authentication - create users file 
+```
+sudo htpasswd -c /etc/nginx/users elkadmin
+```
+then apply the below config to nginx
 ```
 server {
     server_name     elk.bienlab.com;
