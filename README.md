@@ -7,7 +7,10 @@ Then
 ```
 sudo sysctl -p
 ```
-
+If using Docker for Mac, then you will need to start the container with the MAX_MAP_COUNT environment variable.
+```
+docker run... -e MAX_MAP_COUNT=262144..
+```
 Clone this repo and build the image
 ```
 docker build -t biennt/deviceidelk .
