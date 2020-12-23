@@ -27,4 +27,34 @@ Accessing Kibana interface
 
 Sample nginx configurations, bigip irules are located in nginx/bigip directory
 
+## putting nginx in front of elk, so you can accessing by https://your-elk.com 
+```
+server {
+    server_name     elk.bienlab.com;
+    auth_basic "F5 Users Only";
+    auth_basic_user_file /etc/nginx/users;
+
+    location / {
+      proxy_pass  http://localhost:5601;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/elk.bienlab.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/elk.bienlab.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+  server {
+    if ($host = elk.bienlab.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen          80;
+    server_name     elk.bienlab.com;
+    return 404; # managed by Certbot
+}
+```
 Have fun!
