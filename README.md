@@ -13,4 +13,6 @@ Accessing Kibana interface
 - Go to discover to see the raw/parsed log
 - Import the dashboard under Stack Management --> Saved Objects --> Import (use deviceid_dashboard.ndjson file)
 
+Sample nginx configurations, bigip irules are located in nginx/bigip directory
+
 Have fun!
