@@ -33,7 +33,7 @@ when HTTP_REQUEST {
    set client_ip [IP::client_addr]
    set xff_ip [HTTP::header "X-Forwarded-For"]
    if {$xff_ip equals ""} {
-       set xff_ip $client_ip
+       set xff_ip "-"
    }
    set client_port [TCP::client_port]
    set http_host [HTTP::host]
