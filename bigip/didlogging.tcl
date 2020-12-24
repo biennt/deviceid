@@ -32,8 +32,14 @@ when HTTP_REQUEST {
    set virtual [virtual name]
    set client_ip [IP::client_addr]
    set xff_ip [HTTP::header "X-Forwarded-For"]
+   # below is for xff containing more than one IP, get the left-most
+   if {$xff_ip contains ","} {
+        set tmpstr1 [lindex [split $xff_ip ","] 0]
+        set xff_ip $tmpstr1
+   }
+   # for whatever reason, if xff_ip is empty, set it to $client_ip
    if {$xff_ip equals ""} {
-       set xff_ip "-"
+       set xff_ip $client_ip
    }
    set client_port [TCP::client_port]
    set http_host [HTTP::host]
