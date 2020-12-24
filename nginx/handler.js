@@ -34,5 +34,15 @@ function deviceB(r) {
   }
  return deviceB;
 }
-export default {deviceA, deviceB};
 
+function xff_ip(r) {
+  var xff_header, xff_ip;
+  xff_ip = r.remoteAddress;
+  xff_header = r.headersIn['X-Forwarded-For'];
+  if (xff_header) {
+    xff_ip = xff_header;
+  }
+ return xff_ip;
+}
+
+export default {deviceA, deviceB, xff_ip};
