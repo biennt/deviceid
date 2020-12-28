@@ -35,6 +35,8 @@ function deviceB(r) {
  return deviceB;
 }
 
+// getting X-Forwarded-For from the HTTP request header
+// if not found, will take client_ip as xff_ip
 function xff_ip(r) {
   var xff_header, xff_ip;
   xff_ip = r.remoteAddress;
