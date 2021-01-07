@@ -1,7 +1,12 @@
 #!/bin/bash
 while true; do
-USERID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
-PWD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+# for Linux
+#USERID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+#PWD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+# for MacOS
+USERID=`head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c 8`
+PWD=`head /dev/urandom | LC_ALL=C tr -dc A-Za-z0-9 | head -c 8`
+
 echo $USERID
 echo $PWD
 ustring="$USERID:$PWD"
