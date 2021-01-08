@@ -1,16 +1,18 @@
 function doStuff() {
+
 const axios = require('axios');
 const now = Date.now();
-const last10min = now - 6000000
-var deviceAs = [];
+const last10min = now - 60000;
 var deviceBs = [];
+var langpref = [];
 var md5 = require('md5');
+var maxUserPerDevice = 50;
 
 var queryObj = {
- "aggs": {
+	"aggs": {
     "2": {
       "terms": {
-        "field": "xff_ip.keyword",
+        "field": "deviceB.keyword",
         "order": {
           "1": "desc"
         },
@@ -19,7 +21,7 @@ var queryObj = {
       "aggs": {
         "1": {
           "cardinality": {
-            "field": "deviceA.keyword"
+            "field": "uName.keyword"
           }
         }
       }
@@ -103,51 +105,43 @@ var queryObj = {
       ]
     }
   }
-}
-
+}          
 async function makePostRequest() {
 
     let res = await axios.post('http://localhost:9200/logstash-devid*/_search?size=1000', queryObj);
 
-    console.log(`Status code: ${res.status}`);
-    console.log(`Status text: ${res.statusText}`);
-    console.log(`Path: ${res.request.path}`);
+    console.log(`ELK code: ${res.status}`);
     resObj = res.data;
-
-    entries1 = resObj.aggregations;    
-    entries2= entries1["2"];
-    entries= entries2.buckets;
-
+    aggs = resObj.aggregations['2'];
+    entries = aggs.buckets;
     entries.forEach(updateBig);
     function updateBig(item, index, array) {
-      clientip = item.key
-      countdid1 = item["1"];
-      countdid = countdid1.value
-      console.log(clientip)
-      console.log(countdid)
+	    var hashvalB = md5(item.key);
+	    var numberofusername = item['1'].value;
+	    console.log('DeviceID ' + item.key);
+	    console.log('Number of username ' + numberofusername);
+            if (numberofusername > maxUserPerDevice) {
+	    	console.log('Block this device please')
+	        const axiosslack = require('axios');
+		const slackToken = 'removed';
+		run().catch(err => console.log(err));
+		async function run() {
+    		const url = 'https://slack.com/api/chat.postMessage';
+    		const res = await axiosslack.post(url, {
+      		  channel: '#notifications',
+      		  username: 'alerts',
+      		  icon_emoji: ':+1:',
+      		  text: 'Hey, ' + numberofusername + ' of different usernames are accessing your app from this SINGLE deviceID (didB) ' + item.key +'.\nIf you want to block, send a GET request to http://lockit.bienlab.com:8888/insert?type=K&key='+hashvalB+'\n' + 'I will block that device shortly',
+    		}, { headers: { authorization: `Bearer ${slackToken}` } });
+    		console.log('Done', res.data);
+  		}
+	    }
+
     }
-	/*
-    for (var i = 0; i < deviceAs.length; i++) {
-	 const axiosbig = require('axios');
-         axiosbig.get('http://172.31.4.133:8888/insert?type=A&key=' + deviceAs[i]).then(resp => {
-         console.log(resp.data);
-         });
-    }
-    for (var i = 0; i < deviceBs.length; i++) {
-     	 const axiosbig = require('axios');
-         axiosbig.get('http://172.31.4.133:8888/insert?type=B&key=' + deviceBs[i]).then(resp => {
-         console.log(resp.data);
-         });
-    }
-    console.log("Number of entries in BIG-IP: ");
-    const axiosbigcount = require('axios');
-    axiosbigcount.get('http://172.31.4.133:8888/count').then(resp => {
-    console.log(resp.data);
-    });
-*/
 }
+
 
 makePostRequest();
-
 }
 setInterval(doStuff, 2000); //time is in ms
+
