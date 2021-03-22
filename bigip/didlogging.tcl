@@ -44,7 +44,7 @@ when HTTP_REQUEST {
    set client_port [TCP::client_port]
    set http_host [HTTP::host]
    set http_method [HTTP::method]
-   set http_request_uri [HTTP::path -normalized]
+   set http_request_uri [HTTP::path]
    set content_type [HTTP::header "Content-Type"]
    if {$content_type equals ""} {
        set content_type "nocontenttype"
