@@ -32,7 +32,12 @@ do
   uNameIndex=$((RANDOM % $sizeuName))
   RANUSERID=${uNamearray[$uNameIndex]}
   SESSID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 18 | head -n 1)
-
+  RANDI=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+  diA="AaZHN2BBBBBBjAY3fLSqDLPw$RANDI"
+  diB="AS5q4jNm2lKg4SXCyJRF0AQ8$RANDI"
+  echo $RANDI
+  echo $diA
+  echo $diB
   # randomize authentication result code
   authcodeindex=$(($RANDOM % $authcodesize))
   authcode=${authcodearray[$authcodeindex]}
@@ -49,6 +54,6 @@ do
   echo $msg
   echo $msg |  sed -e 's/^[ \t]*//' |  nc -v -t  -w 1 -N 127.0.0.1 5140
 
-sleep 1
+#sleep 1
 done
 

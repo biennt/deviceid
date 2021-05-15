@@ -18,12 +18,6 @@ clientip='172.31.9.60'
 fqdn='ebook.seemedemo.com'
 method='GET' # default
 ua='Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:85.0) Gecko/20100101 Firefox/85.0'
-#diA='AaZHN2BBBBBBjAY3fLSqDLPwzInc2Ogn'
-#diB='AS5q4jNm2lKg4SXCyJRF0AQ8vTwCq6aI'
-
-RANDI=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
-diA="AaZHN2BBBBBBjAY3fLSqDLPw$RANDI"
-diB="AS5q4jNm2lKg4SXCyJRF0AQ8$RANDI"
 
 
 while true
@@ -31,6 +25,13 @@ do
   echo "----------"
   RANUSERID=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)
   SESSID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 18 | head -n 1)
+  RANDI=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+  diA="AaZHN2BBBBBBjAY3fLSqDLPw$RANDI"
+  diB="AS5q4jNm2lKg4SXCyJRF0AQ8$RANDI"
+  echo $RANDI
+  echo $diA
+  echo $diB
+
 
 # login process
  epochtime=`date +%s%N | cut -b1-13`
@@ -49,6 +50,6 @@ do
   echo $msg
   echo $msg |  sed -e 's/^[ \t]*//' |  nc -v -t  -w 1 -N 127.0.0.1 5140
 
-sleep 1
+#sleep 1
 done
 
